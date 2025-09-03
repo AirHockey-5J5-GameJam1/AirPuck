@@ -1,36 +1,60 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // Use the new Input System namespace
+using UnityEngine.InputSystem;
 
 public class mouvementJoueur : MonoBehaviour
 {
-    private GameObject selectedObject;
-    Vector3 offset;
+    private Vector3 offset;
+    private bool isDragging = false;
+    private Vector3 lastPosition;
+    private Vector3 velocity;
+
+    public float minX, maxX, minY, maxY;
+    public Rigidbody2D puck; // Reference to the puck
+    public float hitDistance; // Distance to check for collision
+    public float forceMultiplier; // Tune this
 
     void Update()
     {
-        // Use Mouse.current instead of Input.mousePosition
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        mousePosition.z = 0f; // Make sure Z is 0 for 2D
+        mousePosition.z = 0f;
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             Collider2D targetObject = Physics2D.OverlapPoint(mousePosition);
-
-            if (targetObject)
+            if (targetObject && targetObject.gameObject == gameObject)
             {
-                selectedObject = targetObject.transform.gameObject;
-                offset = selectedObject.transform.position - mousePosition;
+                offset = transform.position - mousePosition;
+                isDragging = true;
+                lastPosition = transform.position;
             }
         }
 
-        if (selectedObject)
+        if (isDragging)
         {
-            selectedObject.transform.position = mousePosition + offset;
+            Vector3 newPosition = mousePosition + offset;
+
+            newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+            newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
+
+            // Move the stick
+            transform.position = newPosition;
+
+            // Compute velocity
+            velocity = (transform.position - lastPosition) / Time.deltaTime;
+            lastPosition = transform.position;
         }
 
-        if (Mouse.current.leftButton.wasReleasedThisFrame && selectedObject)
+        if (Mouse.current.leftButton.wasReleasedThisFrame && isDragging)
         {
-            selectedObject = null;
+            isDragging = false;
+
+            // Check if the puck is within hit range
+            if (Vector2.Distance(transform.position, puck.position) <= hitDistance)
+            {
+                // Apply force to the puck
+                puck.linearVelocity = velocity * forceMultiplier;
+
+            }
         }
     }
 }

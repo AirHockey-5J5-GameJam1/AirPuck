@@ -130,6 +130,9 @@ GameObject:
   - component: {fileID: 1190384}
   - component: {fileID: 1190383}
   - component: {fileID: 1190385}
+  - component: {fileID: 1190386}
+  - component: {fileID: 1190387}
+  - component: {fileID: 1190388}
   m_Layer: 0
   m_Name: Puck_0
   m_TagString: Untagged
@@ -210,7 +213,85 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1190385
+--- !u!58 &1190385
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190382}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 11.9800005
+--- !u!50 &1190386
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190382}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &1190387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190382}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b84f3635bded1654fa970410906dd48b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::mouvementPuck
+  randomForceInterval: 1
+  randomForceStrength: 0.2
+  drag: 0.2
+--- !u!114 &1190388
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,9 +300,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1190382}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ec9adc373ff60742baccc6909c2735a, type: 3}
+  m_Script: {fileID: 11500000, guid: 52f2a0659e7a2bf428ffb7aae9ada8fa, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::mouvementJoueur
+  m_EditorClassIdentifier: Assembly-CSharp::FrictionPuck
+  friction: 0.98
+  minSpeedThreshold: 0.01
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,6 +630,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ec9adc373ff60742baccc6909c2735a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::mouvementJoueur
+  minX: -8
+  maxX: -0.5
+  minY: -3.5
+  maxY: 3.5
+  puck: {fileID: 1190386}
+  hitDistance: 0.5
+  forceMultiplier: 100
 --- !u!58 &954867347
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -593,6 +683,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1014998149}
   - component: {fileID: 1014998148}
+  - component: {fileID: 1014998151}
+  - component: {fileID: 1014998152}
   m_Layer: 0
   m_Name: Joueur2_Petit_0
   m_TagString: Untagged
@@ -673,6 +765,61 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1014998151
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014998147}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 2.955
+--- !u!114 &1014998152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014998147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ec9adc373ff60742baccc6909c2735a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::mouvementJoueur
+  minX: 0.5
+  maxX: 8
+  minY: -3.5
+  maxY: 3.5
+  puck: {fileID: 1190386}
+  hitDistance: 0.5
+  forceMultiplier: 100
 --- !u!1 &1692924922
 GameObject:
   m_ObjectHideFlags: 0
