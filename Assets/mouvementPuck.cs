@@ -43,7 +43,20 @@ public class mouvementPuck : MonoBehaviour
 
                 // Appliquer la force au puck
                 rb.AddForce(direction * appliedForce);
+                Debug.Log($"Collision avec joueur, force appliquée: {appliedForce}");
             }
+        }
+        // Si le puck touche un mur
+        else if (collision.gameObject.CompareTag("Wall"))
+        {
+            // Réduire la vitesse du puck en appliquant le bounceFactor
+            rb.linearVelocity *= bounceFactor;
+            Debug.Log($"Collision avec mur, vitesse après rebond: {rb.linearVelocity.magnitude}");
+        }
+        else
+        {
+            // Débogage pour identifier les collisions non gérées
+            Debug.Log($"Collision avec {collision.gameObject.name}, tag: {collision.gameObject.tag}");
         }
     }
 }
