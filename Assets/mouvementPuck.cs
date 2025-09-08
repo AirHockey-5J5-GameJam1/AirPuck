@@ -1,35 +1,49 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class mouvementPuck : MonoBehaviour
 {
-    public float randomForceInterval = 2f; // Time between random pushes
-    public float randomForceStrength = 0.5f; // How strong the pushes are
-    public float drag = 0.2f; // Slows puck over time (like air friction)
-
     private Rigidbody2D rb;
-    private float timeSinceLastPush;
+
+    [SerializeField] private float maxSpeed = 15f; // Limite la vitesse
+    [SerializeField] private float bounceFactor = 0.95f; // Perte d’énergie aux rebonds
+    [SerializeField] private float forceMultiplier = 100f; // Multiplicateur pour ajuster la force
+    [SerializeField] private float baseForce = 200f; // Force de base pour éviter un puck immobile
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.linearDamping = drag; // Apply drag for air resistance
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        timeSinceLastPush += Time.deltaTime;
-
-        if (timeSinceLastPush >= randomForceInterval)
+        // Limite la vitesse max
+        if (rb.linearVelocity.magnitude > maxSpeed)
         {
-            ApplyRandomPush();
-            timeSinceLastPush = 0f;
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
     }
 
-    void ApplyRandomPush()
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        Vector2 randomDirection = Random.insideUnitCircle.normalized;
-        rb.AddForce(randomDirection * randomForceStrength, ForceMode2D.Impulse);
+        // Si le puck touche un joueur
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // Récupérer le script mouvementJoueur du joueur
+            mouvementJoueur playerMovement = collision.gameObject.GetComponent<mouvementJoueur>();
+            if (playerMovement != null)
+            {
+                // Calculer la direction du contact entre joueur et puck
+                Vector2 direction = (rb.position - (Vector2)collision.transform.position).normalized;
+
+                // Obtenir la vitesse du joueur
+                float playerSpeed = playerMovement.Velocity.magnitude;
+
+                // Calculer la force à appliquer (force de base + proportionnelle à la vitesse du joueur)
+                float appliedForce = baseForce + (playerSpeed * forceMultiplier);
+
+                // Appliquer la force au puck
+                rb.AddForce(direction * appliedForce);
+            }
+        }
     }
 }

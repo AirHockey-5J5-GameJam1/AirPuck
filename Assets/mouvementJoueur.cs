@@ -6,12 +6,17 @@ public class mouvementJoueur : MonoBehaviour
     private Vector3 offset;
     private bool isDragging = false;
     private Vector3 lastPosition;
-    private Vector3 velocity;
+    private Rigidbody2D rb; // Rigidbody2D du joueur
 
     public float minX, maxX, minY, maxY;
-    public Rigidbody2D puck; // Reference to the puck
-    public float hitDistance; // Distance to check for collision
-    public float forceMultiplier; // Tune this
+
+    // Propriété publique pour accéder à la vitesse du joueur
+    public Vector2 Velocity { get; private set; }
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
@@ -36,25 +41,22 @@ public class mouvementJoueur : MonoBehaviour
             newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
             newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
 
-            // Move the stick
+            // Déplacer le joueur
             transform.position = newPosition;
 
-            // Compute velocity
-            velocity = (transform.position - lastPosition) / Time.deltaTime;
+            // Calculer la vitesse
+            Velocity = (transform.position - lastPosition) / Time.deltaTime;
             lastPosition = transform.position;
+
+            // Mettre à jour la vitesse du Rigidbody2D pour la cohérence physique
+            rb.linearVelocity = Velocity;
         }
 
         if (Mouse.current.leftButton.wasReleasedThisFrame && isDragging)
         {
             isDragging = false;
-
-            // Check if the puck is within hit range
-            if (Vector2.Distance(transform.position, puck.position) <= hitDistance)
-            {
-                // Apply force to the puck
-                puck.linearVelocity = velocity * forceMultiplier;
-
-            }
+            Velocity = Vector2.zero; // Réinitialiser la vitesse quand le drag s'arrête
+            rb.linearVelocity = Vector2.zero; // Arrêter le mouvement du joueur
         }
     }
 }
