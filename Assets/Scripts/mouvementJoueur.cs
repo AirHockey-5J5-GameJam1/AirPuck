@@ -10,7 +10,7 @@ public class mouvementJoueur : MonoBehaviour
 
     public float minX, maxX, minY, maxY;
 
-    // Propriété publique pour accéder à la vitesse du joueur
+    // Propriï¿½tï¿½ publique pour accï¿½der ï¿½ la vitesse du joueur
     public Vector2 Velocity { get; private set; }
 
     void Start()
@@ -41,22 +41,22 @@ public class mouvementJoueur : MonoBehaviour
             newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
             newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
 
-            // Déplacer le joueur
+            // Dï¿½placer le joueur
             transform.position = newPosition;
 
             // Calculer la vitesse
             Velocity = (transform.position - lastPosition) / Time.deltaTime;
             lastPosition = transform.position;
 
-            // Mettre à jour la vitesse du Rigidbody2D pour la cohérence physique
+            // Mettre ï¿½ jour la vitesse du Rigidbody2D pour la cohï¿½rence physique
             rb.linearVelocity = Velocity;
         }
 
         if (Mouse.current.leftButton.wasReleasedThisFrame && isDragging)
         {
             isDragging = false;
-            Velocity = Vector2.zero; // Réinitialiser la vitesse quand le drag s'arrête
-            rb.linearVelocity = Vector2.zero; // Arrêter le mouvement du joueur
+            Velocity = Vector2.zero; // Rï¿½initialiser la vitesse quand le drag s'arrï¿½te
+            rb.linearVelocity = Vector2.zero; // Arrï¿½ter le mouvement du joueur
         }
     }
 }
