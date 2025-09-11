@@ -1,16 +1,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
-public class mouvementJoueur : MonoBehaviour
+public class mouvementJoueur : NetworkBehaviour
 {
     private Vector3 offset;
     private bool isDragging = false;
     private Vector3 lastPosition;
-    private Rigidbody2D rb; // Rigidbody2D du joueur
+    private Rigidbody2D rb;
 
     public float minX, maxX, minY, maxY;
 
-    // Propri�t� publique pour acc�der � la vitesse du joueur
     public Vector2 Velocity { get; private set; }
 
     void Start()
@@ -18,8 +18,27 @@ public class mouvementJoueur : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (OwnerClientId == 0) // Hôte
+            transform.position = new Vector3(-7f, 0.5f, 0f);
+        else if (OwnerClientId == 1) // Client
+            transform.position = new Vector3(7f, 0.5f, 0f);
+    }
+
     void Update()
     {
+        if (!IsLocalPlayer) return; 
+        GestionDeplacement();
+        
+    }
+
+
+    void GestionDeplacement()
+    {
+       
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         mousePosition.z = 0f;
 
@@ -41,22 +60,19 @@ public class mouvementJoueur : MonoBehaviour
             newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
             newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
 
-            // D�placer le joueur
             transform.position = newPosition;
 
-            // Calculer la vitesse
             Velocity = (transform.position - lastPosition) / Time.deltaTime;
             lastPosition = transform.position;
 
-            // Mettre � jour la vitesse du Rigidbody2D pour la coh�rence physique
             rb.linearVelocity = Velocity;
         }
 
         if (Mouse.current.leftButton.wasReleasedThisFrame && isDragging)
         {
             isDragging = false;
-            Velocity = Vector2.zero; // R�initialiser la vitesse quand le drag s'arr�te
-            rb.linearVelocity = Vector2.zero; // Arr�ter le mouvement du joueur
+            Velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
         }
     }
 }
