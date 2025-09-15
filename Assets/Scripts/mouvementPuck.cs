@@ -1,7 +1,10 @@
 using UnityEngine;
-using Unity.Netcode;
+using System.Collections;
+using Unity.Netcode; // namespace pour utiliser Netcode
+
 using Unity.Netcode.Components;
-public class mouvementPuck : MonoBehaviour
+
+public class mouvementPuck : NetworkBehaviour
 {
     private Rigidbody2D rb;
 
@@ -18,6 +21,10 @@ public class mouvementPuck : MonoBehaviour
 
     void Update()
     {
+        if (!IsServer) return;
+        if (!GameManager.instance.partieEnCours) return;
+
+
         // Limite la vitesse max
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
