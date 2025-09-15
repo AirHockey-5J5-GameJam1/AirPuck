@@ -10,6 +10,7 @@ public class GameManager : NetworkBehaviour //pour un network object
     public bool partieTerminee { private set; get; } // permet de savoir si une partie est terminée
     public GameObject Joueur1;
     public GameObject Joueur2;
+    
 
     // Création du singleton si nécessaire
     void Awake()

@@ -7,16 +7,34 @@ using Unity.Netcode.Components;
 public class mouvementPuck : NetworkBehaviour
 {
     private Rigidbody2D rb;
-
+    public static mouvementPuck instance;
     [SerializeField] private float maxSpeed = 15f; // Limite la vitesse
     [SerializeField] private float bounceFactor = 0.95f; // Perte d’énergie aux rebonds
     [SerializeField] private float forceMultiplier = 100f; // Multiplicateur pour ajuster la force
     [SerializeField] private float baseForce = 200f; // Force de base pour éviter un puck immobile
+    float distance = 8f;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+
+
 
 
     void Update()
@@ -30,6 +48,26 @@ public class mouvementPuck : NetworkBehaviour
         {
             rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
+
+        if (transform.position.x < -distance) 
+        {
+            ScoreManager.instance.AugmenteScoreClient();
+
+        }
+
+
+        if(transform.position.x > distance)
+        {
+            ScoreManager.instance.AugmenteHoteScore();
+        }
+    }
+
+
+    public void LancerPuckMilieu()
+    {
+        transform.position = new Vector3(0f, 0.5f, 0f);
+        GetComponent<Rigidbody2D>().linearVelocity = new Vector3(0, 0, 0);
+        if (GameManager.instance.partieTerminee) return;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
