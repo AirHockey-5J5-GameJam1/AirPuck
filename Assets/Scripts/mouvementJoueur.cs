@@ -18,19 +18,10 @@ public class mouvementJoueur : NetworkBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-
-        if (OwnerClientId == 0) // Hôte
-            transform.position = new Vector3(-7f, 0.5f, 0f);
-        else if (OwnerClientId == 1) // Client
-            transform.position = new Vector3(7f, 0.5f, 0f);
-    }
 
     void Update()
     {
-        if (!IsLocalPlayer) return; 
+
         GestionDeplacement();
         
     }

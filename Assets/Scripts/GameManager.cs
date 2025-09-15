@@ -8,7 +8,8 @@ public class GameManager : NetworkBehaviour //pour un network object
 
     public bool partieEnCours { private set; get; } //permet de savoir si une partie est en cours
     public bool partieTerminee { private set; get; } // permet de savoir si une partie est terminée
-
+    public GameObject Joueur1;
+    public GameObject Joueur2;
 
     // Création du singleton si nécessaire
     void Awake()
@@ -22,6 +23,34 @@ public class GameManager : NetworkBehaviour //pour un network object
             Destroy(gameObject);
         }
     }
+
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        NetworkManager.Singleton.OnClientConnectedCallback += OnNouveauClientConnecte;
+    }
+
+
+    private void OnNouveauClientConnecte(ulong obj)
+    {
+        if (!IsServer) return;
+
+        if (NetworkManager.Singleton.ConnectedClients.Count == 1)
+        {
+            GameObject nouveauJoueur = Instantiate(Joueur1);
+            nouveauJoueur.GetComponent<NetworkObject>().SpawnWithOwnership(obj);
+            nouveauJoueur.transform.position = new Vector3(-7f, 0.5f, 0f);
+        }
+        else if (NetworkManager.Singleton.ConnectedClients.Count == 2)
+        {
+            GameObject nouveauJoueur = Instantiate(Joueur2);
+            nouveauJoueur.GetComponent<NetworkObject>().SpawnWithOwnership(obj);
+            nouveauJoueur.transform.position = new Vector3(7f, 0.5f, 0f);
+        }
+    }
+
 
     // Fonction appelée pour le bouton qui permet de se connecter comme hôte
     public void LanceCommeHote()
@@ -43,10 +72,7 @@ public class GameManager : NetworkBehaviour //pour un network object
         if (!IsHost) return;
         if (partieEnCours) return;
 
-        if (NetworkManager.Singleton.ConnectedClientsList.Count == 2)
-        {
             NouvellePartie();
-        }
     }
 
     // Activation d'une nouvelle partie lorsque 2 joueurs. On appelle la fonction de la balle qui

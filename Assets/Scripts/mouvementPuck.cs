@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using Unity.Netcode;
+using Unity.Netcode.Components;
 public class mouvementPuck : MonoBehaviour
 {
     private Rigidbody2D rb;
@@ -14,7 +15,8 @@ public class mouvementPuck : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate()
+
+    void Update()
     {
         // Limite la vitesse max
         if (rb.linearVelocity.magnitude > maxSpeed)

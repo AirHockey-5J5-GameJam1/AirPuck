@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ec9adc373ff60742baccc6909c2735a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::mouvementJoueur
+  ShowTopMostFoldoutHeaderGroup: 1
   minX: -8
   maxX: -0.5
   minY: -3.5
@@ -223,7 +224,7 @@ MonoBehaviour:
   RotationMaxInterpolationTime: 0.1
   ScaleLerpSmoothing: 1
   ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 0
+  AuthorityMode: 1
   TickSyncChildren: 0
   UseUnreliableDeltas: 0
   SyncPositionX: 1
