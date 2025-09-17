@@ -12,7 +12,7 @@ public class mouvementPuck : NetworkBehaviour
     [SerializeField] private float bounceFactor = 0.95f; // Perte d’énergie aux rebonds
     [SerializeField] private float forceMultiplier = 100f; // Multiplicateur pour ajuster la force
     [SerializeField] private float baseForce = 200f; // Force de base pour éviter un puck immobile
-    float distance = 8f;
+    float distance = 8.5f;
 
 
     void Start()
@@ -52,6 +52,7 @@ public class mouvementPuck : NetworkBehaviour
         if (transform.position.x < -distance) 
         {
             ScoreManager.instance.AugmenteScoreClient();
+            LancerPuckMilieu();
 
         }
 
@@ -59,13 +60,14 @@ public class mouvementPuck : NetworkBehaviour
         if(transform.position.x > distance)
         {
             ScoreManager.instance.AugmenteHoteScore();
+            LancerPuckMilieu();
         }
     }
 
 
     public void LancerPuckMilieu()
     {
-        transform.position = new Vector3(0f, 0.5f, 0f);
+        transform.position = new Vector3(0, 0, 0);
         GetComponent<Rigidbody2D>().linearVelocity = new Vector3(0, 0, 0);
         if (GameManager.instance.partieTerminee) return;
     }

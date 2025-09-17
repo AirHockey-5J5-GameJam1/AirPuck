@@ -10,8 +10,8 @@ public class GameManager : NetworkBehaviour //pour un network object
     public bool partieTerminee { private set; get; } // permet de savoir si une partie est terminée
     public GameObject Joueur1;
     public GameObject Joueur2;
+    public GameObject puck;
     
-
     // Création du singleton si nécessaire
     void Awake()
     {
@@ -49,6 +49,7 @@ public class GameManager : NetworkBehaviour //pour un network object
             GameObject nouveauJoueur = Instantiate(Joueur2);
             nouveauJoueur.GetComponent<NetworkObject>().SpawnWithOwnership(obj);
             nouveauJoueur.transform.position = new Vector3(7f, 0.5f, 0f);
+            CreationPuck();
         }
     }
 
@@ -83,17 +84,27 @@ public class GameManager : NetworkBehaviour //pour un network object
         partieEnCours = true;
     }
 
+    private void CreationPuck()
+    {
+        GameObject nouvellePuck = Instantiate(puck);
+        nouvellePuck.GetComponent<NetworkObject>().Spawn();
+        if(partieTerminee){
+            Destroy(nouvellePuck);
+        }
+    }
+
    // Fonction appelée par le ScoreManager pour terminer la partie
     public void FinPartie()
     {
         partieTerminee = true;
+
     }
 
   // Fonction appelée par le bouton Recommencer pour recommencer une partie
     public void Recommencer()
     {
         NetworkManager.Singleton.Shutdown(); // On arrête le NetworkManager pour réinitialiser la partie
-        Destroy(NetworkManager.gameObject);
+        partieTerminee = false;
         partieEnCours = false; // On remet la partie en cours à false
         SceneManager.LoadScene(0);// On recharge la scène de jeu
     }
