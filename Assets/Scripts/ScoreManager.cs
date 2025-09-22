@@ -100,13 +100,13 @@ public class ScoreManager : NetworkBehaviour
         {
             GagnantHote_ClientRpc();
             GameManager.instance.FinPartie();
-            Destroy(mouvementPuck.instance);
+            
         }
         else if (scoreClient.Value >= pointageCible)
         {
             GagnantClient_ClientRpc();
             GameManager.instance.FinPartie();
-            Destroy(mouvementPuck.instance);
+            
         }
     }
 
