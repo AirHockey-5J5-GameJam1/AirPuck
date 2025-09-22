@@ -54,18 +54,34 @@ public class ScoreManager : NetworkBehaviour
     /* Fonction pour augmenter le score de l'h�te
      - On incr�mente le score de l'h�te
      - On v�rifie si la partie est termin�e*/
-    public void AugmenteHoteScore()
+    public void AugmenteHoteScore(mouvementJoueur joueur)
     {
-        scoreHote.Value++;
+        if (joueur != null && joueur.doublePointActif)
+        {
+            scoreHote.Value += 2;
+        }
+        else
+        {
+            scoreHote.Value++;
+        }
+        
         VerifieFinPartie();
     }
 
     /* Fonction pour augmenter le score du client
      - On incr�mente le score du client
      - On v�rifie si la partie est termin�e*/
-    public void AugmenteScoreClient()
+    public void AugmenteScoreClient(mouvementJoueur joueur)
+
     {
-        scoreClient.Value++;
+        if (joueur != null && joueur.doublePointActif)
+        {
+            scoreClient.Value += 2;
+        }
+        else
+        {
+            scoreClient.Value ++;
+        }
         VerifieFinPartie();
     }
 

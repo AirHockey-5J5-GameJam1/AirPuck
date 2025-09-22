@@ -14,6 +14,7 @@ public class mouvementPuck : NetworkBehaviour
     [SerializeField] private float baseForce = 200f; // Force de base pour éviter un puck immobile
     float distance = 8.5f;
 
+    public GameObject dernierJoueurAToucher;
 
     void Start()
     {
@@ -49,17 +50,19 @@ public class mouvementPuck : NetworkBehaviour
             rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
 
-        if (transform.position.x < -distance) 
-        {
-            ScoreManager.instance.AugmenteScoreClient();
+        if (transform.position.x < -distance)
+        {   
+            var joueur = dernierJoueurAToucher?.GetComponent<mouvementJoueur>();
+            ScoreManager.instance.AugmenteScoreClient(joueur);
             LancerPuckMilieu();
 
         }
 
 
-        if(transform.position.x > distance)
-        {
-            ScoreManager.instance.AugmenteHoteScore();
+        if (transform.position.x > distance)
+        {   
+            var joueur = dernierJoueurAToucher?.GetComponent<mouvementJoueur>();
+            ScoreManager.instance.AugmenteHoteScore(joueur);
             LancerPuckMilieu();
         }
     }
@@ -81,6 +84,9 @@ public class mouvementPuck : NetworkBehaviour
             mouvementJoueur playerMovement = collision.gameObject.GetComponent<mouvementJoueur>();
             if (playerMovement != null)
             {
+                // Retenir le dernier joueur qui a touché le puck
+                dernierJoueurAToucher = collision.gameObject;
+
                 // Calculer la direction du contact entre joueur et puck
                 Vector2 direction = (rb.position - (Vector2)collision.transform.position).normalized;
 
@@ -102,10 +108,78 @@ public class mouvementPuck : NetworkBehaviour
             rb.linearVelocity *= bounceFactor;
             Debug.Log($"Collision avec mur, vitesse après rebond: {rb.linearVelocity.magnitude}");
         }
+
+        else if (collision.gameObject.CompareTag("IceCube"))
+        {
+            // 1. Joue l'animation "break"
+            Animator anim = collision.gameObject.GetComponent<Animator>();
+            if (anim != null)
+            {
+                anim.SetTrigger("Break");
+            }
+
+            // 2. Donne le boost à la dernière personne qui a touché le puck
+            if (dernierJoueurAToucher != null)
+            {
+                mouvementJoueur joueur = dernierJoueurAToucher.GetComponent<mouvementJoueur>();
+                if (joueur != null)
+                {
+                    AppliquerBoostAleatoire(joueur);
+                }
+            }
+
+            // 3. Détruire le cube après un petit délai
+            Destroy(collision.gameObject, 1f);
+        }
         else
         {
             // Débogage pour identifier les collisions non gérées
             Debug.Log($"Collision avec {collision.gameObject.name}, tag: {collision.gameObject.tag}");
         }
     }
+
+    void AppliquerBoostAleatoire(mouvementJoueur joueur)
+    {
+        int boostType = Random.Range(0, 3); // 0, 1 ou 2
+
+        switch (boostType)
+        {
+            case 0:
+                StartCoroutine(BoostTaille(joueur));
+                break;
+            case 1:
+                StartCoroutine(BoostPuckVitesse());
+                break;
+            case 2:
+                StartCoroutine(BoostDoublePoint(joueur));
+                break;
+        }
+    }
+
+
+
+
+    IEnumerator BoostTaille(mouvementJoueur joueur)
+    {
+        joueur.transform.localScale *= 1.5f;
+        yield return new WaitForSeconds(5f);
+        joueur.transform.localScale /= 1.5f;
+    }
+
+
+    IEnumerator BoostPuckVitesse()
+    {
+        float originalSpeed = maxSpeed;
+        maxSpeed *= 2f;
+        yield return new WaitForSeconds(5f);
+        maxSpeed = originalSpeed;
+    }
+    
+    IEnumerator BoostDoublePoint(mouvementJoueur joueur)
+    {
+        joueur.doublePointActif = true;
+        yield return new WaitForSeconds(15f);
+        joueur.doublePointActif = false;
+    }
+
 }

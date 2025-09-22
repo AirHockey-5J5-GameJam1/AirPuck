@@ -13,6 +13,8 @@ public class mouvementJoueur : NetworkBehaviour
 
     public Vector2 Velocity { get; private set; }
 
+    public bool doublePointActif = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
