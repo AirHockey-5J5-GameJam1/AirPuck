@@ -33,6 +33,13 @@ public class GameManager : NetworkBehaviour //pour un network object
         NetworkManager.Singleton.OnClientConnectedCallback += OnNouveauClientConnecte;
     }
 
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnNouveauClientConnecte;
+    }
+
 
     private void OnNouveauClientConnecte(ulong obj)
     {

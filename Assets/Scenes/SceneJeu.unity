@@ -2241,7 +2241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
   ShowTopMostFoldoutHeaderGroup: 1
   scoreTxt: {fileID: 1405871201}
-  pointageCible: 7
+  pointageCible: 2
   pannelVictoire: {fileID: 454583539}
   pannelDefaite: {fileID: 1234403033}
 --- !u!1 &1405871198

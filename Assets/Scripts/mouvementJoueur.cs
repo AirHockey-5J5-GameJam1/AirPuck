@@ -26,6 +26,14 @@ public class mouvementJoueur : NetworkBehaviour
         
     }
 
+    public override void OnNetworkDespawn()
+
+    {
+        base.OnNetworkDespawn();
+        if (IsServer) Destroy(gameObject);
+        print("le joueur est despawn");
+    }
+
 
     void GestionDeplacement()
     {
