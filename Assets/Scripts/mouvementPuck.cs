@@ -109,8 +109,19 @@ public class mouvementPuck : NetworkBehaviour
             Debug.Log($"Collision avec mur, vitesse après rebond: {rb.linearVelocity.magnitude}");
         }
 
-        else if (collision.gameObject.CompareTag("IceCube"))
+        else
         {
+            // Débogage pour identifier les collisions non gérées
+            Debug.Log($"Collision avec {collision.gameObject.name}, tag: {collision.gameObject.tag}");
+        }
+    }
+
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("IceCube"))
+        {
+            print("tachetouille");
             // 1. Joue l'animation "break"
             Animator anim = collision.gameObject.GetComponent<Animator>();
             if (anim != null)
@@ -127,14 +138,24 @@ public class mouvementPuck : NetworkBehaviour
                     AppliquerBoostAleatoire(joueur);
                 }
             }
-
-            // 3. Détruire le cube après un petit délai
-            Destroy(collision.gameObject, 1f);
+            
+            if (collision.TryGetComponent<NetworkObject>(out var netObj))
+            {
+                if (IsServer) // Seulement le serveur peut le despawn
+                {
+                    // petit délai avant destruction
+                    StartCoroutine(DelayedDespawn(netObj, 1f));
+                }
+            }
         }
-        else
+    }
+
+    IEnumerator DelayedDespawn(NetworkObject netObj, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (netObj != null && netObj.IsSpawned)
         {
-            // Débogage pour identifier les collisions non gérées
-            Debug.Log($"Collision avec {collision.gameObject.name}, tag: {collision.gameObject.tag}");
+            netObj.Despawn(true); // supprime sur le réseau et local
         }
     }
 
@@ -161,6 +182,7 @@ public class mouvementPuck : NetworkBehaviour
 
     IEnumerator BoostTaille(mouvementJoueur joueur)
     {
+
         joueur.transform.localScale *= 1.5f;
         yield return new WaitForSeconds(5f);
         joueur.transform.localScale /= 1.5f;
@@ -169,6 +191,7 @@ public class mouvementPuck : NetworkBehaviour
 
     IEnumerator BoostPuckVitesse()
     {
+        print("boost vitesse");
         float originalSpeed = maxSpeed;
         maxSpeed *= 2f;
         yield return new WaitForSeconds(5f);
@@ -177,6 +200,7 @@ public class mouvementPuck : NetworkBehaviour
     
     IEnumerator BoostDoublePoint(mouvementJoueur joueur)
     {
+        print("double point");
         joueur.doublePointActif = true;
         yield return new WaitForSeconds(15f);
         joueur.doublePointActif = false;
