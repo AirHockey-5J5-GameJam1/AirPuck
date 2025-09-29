@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fc6389a8467c14246ac61e9cfa591fcb
+guid: 38b23d8591ebaa94aaf32649aaf8cf0b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3340047536602928170
-    second: Joueur1_Petit_0
+      213: 6407114695071137431
+    second: Neon Rectangle Stock Photos, Pictures & Royalty-Free Images - iStock_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Joueur1_Petit_0
+      name: Neon Rectangle Stock Photos, Pictures & Royalty-Free Images - iStock_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 591
-        height: 591
+        width: 612
+        height: 360
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6db2dd73674c5a1d0800000000000000
-      internalID: -3340047536602928170
+      spriteID: 79e76ea6ed4aae850800000000000000
+      internalID: 6407114695071137431
       vertices: []
       indices: 
       edges: []
@@ -125,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Joueur1_Petit_0: -3340047536602928170
+      Neon Rectangle Stock Photos, Pictures & Royalty-Free Images - iStock_0: 6407114695071137431
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

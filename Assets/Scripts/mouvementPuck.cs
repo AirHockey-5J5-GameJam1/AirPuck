@@ -52,6 +52,8 @@ public class mouvementPuck : NetworkBehaviour
 
         if (transform.position.x < -distance)
         {   
+            soundManager.instance.JoueSon_Rpc(3);
+            soundManager.instance.JoueSon_Rpc(4);
             var joueur = dernierJoueurAToucher?.GetComponent<mouvementJoueur>();
             ScoreManager.instance.AugmenteScoreClient(joueur);
             LancerPuckMilieu();
@@ -61,6 +63,8 @@ public class mouvementPuck : NetworkBehaviour
 
         if (transform.position.x > distance)
         {   
+            soundManager.instance.JoueSon_Rpc(3);
+            soundManager.instance.JoueSon_Rpc(4);
             var joueur = dernierJoueurAToucher?.GetComponent<mouvementJoueur>();
             ScoreManager.instance.AugmenteHoteScore(joueur);
             LancerPuckMilieu();
@@ -79,8 +83,11 @@ public class mouvementPuck : NetworkBehaviour
     {
         // Si le puck touche un joueur
         if (collision.gameObject.CompareTag("Player"))
-        {
+        {   
+            soundManager.instance.JoueSon_Rpc(6);
+
             // Récupérer le script mouvementJoueur du joueur
+            
             mouvementJoueur playerMovement = collision.gameObject.GetComponent<mouvementJoueur>();
             if (playerMovement != null)
             {
@@ -103,7 +110,8 @@ public class mouvementPuck : NetworkBehaviour
         }
         // Si le puck touche un mur
         else if (collision.gameObject.CompareTag("Wall"))
-        {
+        {   
+            soundManager.instance.JoueSon_Rpc(6);
             // Réduire la vitesse du puck en appliquant le bounceFactor
             rb.linearVelocity *= bounceFactor;
             Debug.Log($"Collision avec mur, vitesse après rebond: {rb.linearVelocity.magnitude}");
@@ -127,6 +135,8 @@ public class mouvementPuck : NetworkBehaviour
             if (anim != null)
             {
                 anim.SetTrigger("Break");
+                soundManager.instance.JoueSon_Rpc(5);
+
             }
 
             // 2. Donne le boost à la dernière personne qui a touché le puck
@@ -184,6 +194,7 @@ public class mouvementPuck : NetworkBehaviour
     {
 
         joueur.transform.localScale *= 1.5f;
+        soundManager.instance.JoueSon_Rpc(1);
         yield return new WaitForSeconds(5f);
         joueur.transform.localScale /= 1.5f;
     }
@@ -192,6 +203,7 @@ public class mouvementPuck : NetworkBehaviour
     IEnumerator BoostPuckVitesse()
     {
         print("boost vitesse");
+        soundManager.instance.JoueSon_Rpc(2);
         float originalSpeed = maxSpeed;
         maxSpeed *= 2f;
         yield return new WaitForSeconds(5f);
@@ -202,6 +214,7 @@ public class mouvementPuck : NetworkBehaviour
     {
         print("double point");
         joueur.doublePointActif = true;
+        soundManager.instance.JoueSon_Rpc(0);
         yield return new WaitForSeconds(15f);
         joueur.doublePointActif = false;
     }

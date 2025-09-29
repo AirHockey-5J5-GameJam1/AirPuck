@@ -26,7 +26,7 @@ public class iceCubeSpawner : NetworkBehaviour{
         Vector3 spawnPosition = new Vector3(
             Random.Range(minX, maxX),
             Random.Range(minY, maxY),
-            0f        );
+            0f);
 
         GameObject iceCube = Instantiate(iceCubePrefab, spawnPosition, Quaternion.identity);
         iceCube.GetComponent<NetworkObject>().Spawn();
