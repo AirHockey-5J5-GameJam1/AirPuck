@@ -1197,7 +1197,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 78b80f560acda444ebae5a1e95b0364b, type: 3}
+  m_Resource: {fileID: 8300000, guid: f845b0be2477ef4489d49be991cac8b5, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1297,9 +1297,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::soundManager
   ShowTopMostFoldoutHeaderGroup: 1
   sons:
-  - {fileID: 8300000, guid: 9e40f6294056c8642843d1c4148fe15b, type: 3}
-  - {fileID: 8300000, guid: 86b7b0c52247b6f40939c95ae0bafc85, type: 3}
-  - {fileID: 8300000, guid: abf01a22f8a7699408043dfb95520e45, type: 3}
+  - {fileID: 8300000, guid: f24d4e8a2e52f4940b48a4118732298d, type: 3}
+  - {fileID: 8300000, guid: 7e7648aa0a0a5a74a86c9cd781819fea, type: 3}
+  - {fileID: 8300000, guid: 12480cae1a1c1dc4f9e87558bb682bb7, type: 3}
   - {fileID: 8300000, guid: 42550fa0898bb644d8a436f9049feec1, type: 3}
   - {fileID: 8300000, guid: 9214a8de490819c4cb1d2b12f58e0cb6, type: 3}
   - {fileID: 8300000, guid: 1d9d342ffd400334ba7641953fdbf469, type: 3}
