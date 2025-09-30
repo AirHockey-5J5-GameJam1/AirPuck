@@ -12,12 +12,15 @@ public class mouvementPuck : NetworkBehaviour
     [SerializeField] private float bounceFactor = 0.95f; // Perte d’énergie aux rebonds
     [SerializeField] private float forceMultiplier = 100f; // Multiplicateur pour ajuster la force
     [SerializeField] private float baseForce = 200f; // Force de base pour éviter un puck immobile
+    private bool isSizeBoost= false;
+
     float distance = 8.5f;
 
     public GameObject dernierJoueurAToucher;
 
     void Start()
     {
+        isSizeBoost= false;
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -176,6 +179,8 @@ public class mouvementPuck : NetworkBehaviour
         switch (boostType)
         {
             case 0:
+                if (isSizeBoost) return;
+                isSizeBoost = true;
                 StartCoroutine(BoostTaille(joueur));
                 break;
             case 1:
@@ -196,6 +201,7 @@ public class mouvementPuck : NetworkBehaviour
         joueur.transform.localScale *= 1.5f;
         soundManager.instance.JoueSon_Rpc(1);
         yield return new WaitForSeconds(5f);
+        isSizeBoost= false;
         joueur.transform.localScale /= 1.5f;
     }
 
